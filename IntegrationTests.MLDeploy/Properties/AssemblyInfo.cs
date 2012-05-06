@@ -5,19 +5,14 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Lib.MLDeploy")]
+[assembly: AssemblyTitle("IntegrationTests.MLDeploy")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Lib.MLDeploy")]
+[assembly: AssemblyProduct("IntegrationTests.MLDeploy")]
 [assembly: AssemblyCopyright("Copyright ©  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: InternalsVisibleTo("Console.MLDeploy")]
-[assembly: InternalsVisibleTo("UnitTests.MLDeploy")]
-[assembly: InternalsVisibleTo("IntegrationTests.MLDeploy")]
-[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
-
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -25,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("05ac1ecd-c10e-44d6-a4c7-b99a572dc766")]
+[assembly: Guid("9351f427-e0ae-41ad-94ac-38e49d2a34c4")]
 
 // Version information for an assembly consists of the following four values:
 //
