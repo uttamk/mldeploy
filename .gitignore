@@ -2,4 +2,4 @@
 /*/bin
 /*/obj
 *.user
-/_ReSharper.MLDeploy/ModuleIds.xml
+/_ReSharper.MLDeploy/*
