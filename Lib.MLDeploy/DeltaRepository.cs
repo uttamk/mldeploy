@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Marklogic.Xcc;
+using UnitTests.MLDeploy;
 
 namespace Lib.MLDeploy
 {
@@ -34,7 +35,27 @@ namespace Lib.MLDeploy
 
         public Delta GetLatestDeltaInDatabase()
         {
-            throw new NotImplementedException();
+            ContentSource contentSource = ContentSourceFactory.NewContentSource(new Uri(_connectionString));
+
+
+            using (var session = contentSource.NewSession())
+            {
+                const string xqueryToExcecute = @"xquery version ""1.0-ml"";
+                                           declare namespace m=""http://mldeploy.org"";
+                                           for $doc in //*:LatestDelta 
+                                           return $doc/m:Number/text()";
+
+                Request request = session.NewAdhocQuery(xqueryToExcecute);
+                string result = session.SubmitRequest(request).AsString();
+
+                if(result == string.Empty)
+                {
+                    return new NoDelta();
+                }
+
+                long number = Int64.Parse(result);
+                return new Delta(number, string.Format("{0}\\{1}.xqy", _path, number));
+            }
         }
 
         public void ApplyDelta(Delta delta)

@@ -4,6 +4,7 @@ using System.IO;
 using Lib.MLDeploy;
 using Marklogic.Xcc;
 using NUnit.Framework;
+using UnitTests.MLDeploy;
 
 namespace IntegrationTests.MLDeploy
 {
@@ -22,7 +23,7 @@ namespace IntegrationTests.MLDeploy
             List<Delta> allDeltas = new DeltaRepository(path, null).GetAllDeltas();
 
             Assert.AreEqual(2, allDeltas.Count);
-            Assert.IsNotNull(allDeltas.Find(d=>d.Number ==1L && d.Path == "..\\Deltas\\1.xqy"));
+            Assert.IsNotNull(allDeltas.Find(d=>d.Number == 1L && d.Path == "..\\Deltas\\1.xqy"));
 
             Directory.Delete(path, true);
          
@@ -43,7 +44,7 @@ namespace IntegrationTests.MLDeploy
             AssertThatTheDeltaWasApplied("<shouldapplydelta>a</shouldapplydelta>", connectionString);
 
             //CleanUp
-            DeleteInDatabase("shouldapplydelta.xml", connectionString);
+            DeleteTheLatestDeltaInTheDatabase(connectionString);
             Directory.Delete(path, true);
             
         }
@@ -58,6 +59,50 @@ namespace IntegrationTests.MLDeploy
             AssertThatTheLatestDeltaIs(2L, connectionString);
 
 
+        } 
+        
+        [Test]
+        public void Should_get_latest_delta_as_no_delta_when_the_database_is_fresh()
+        {
+            const string connectionString = "xcc://admin:password@localhost:9001";
+            DeleteTheLatestDeltaInTheDatabase(connectionString);
+
+            Delta latestDelta = new DeltaRepository(null, connectionString).GetLatestDeltaInDatabase();
+
+            Assert.IsInstanceOf(typeof(NoDelta), latestDelta);
+
+        } 
+        
+        
+        [Test]
+        public void Should_get_latest_delta_when_there_is_an_existing_delta_in_the_database()
+        {
+            const string connectionString = "xcc://admin:password@localhost:9001";
+            SetupLatestDeltaAs(10L, connectionString);
+            Delta latestDelta = new DeltaRepository(null, connectionString).GetLatestDeltaInDatabase();
+            Assert.That(typeof(Delta) ==  latestDelta.GetType());
+            Assert.AreEqual(10L, latestDelta.Number);
+
+            DeleteTheLatestDeltaInTheDatabase(connectionString);
+
+        }
+
+        private void SetupLatestDeltaAs(long deltaNumber, string connectionString)
+        {
+            ContentSource contentSource = ContentSourceFactory.NewContentSource(new Uri(connectionString));
+
+
+            using (var session = contentSource.NewSession())
+            {
+                string xquery = string.Format(@"xquery version ""1.0-ml"";
+                                              xdmp:document-insert(""/mldeploy/latest.xml"", <LatestDelta xmlns:m=""http://mldeploy.org""><m:Number>{0}</m:Number></LatestDelta>
+                                                                   ,()
+                                                                   );"
+                                              , deltaNumber);
+                Request request =session.NewAdhocQuery(xquery);
+               session.SubmitRequest(request).AsString();
+
+            }
         }
 
         private void AssertThatTheLatestDeltaIs(long deltaNumber, string connectionString)
@@ -78,16 +123,26 @@ namespace IntegrationTests.MLDeploy
             }
         }
 
-        private void DeleteInDatabase(string fileName, string uri)
+        private void DeleteTheLatestDeltaInTheDatabase(string uri)
         {
             ContentSource contentSource = ContentSourceFactory.NewContentSource(new Uri(uri));
 
 
             using (var session = contentSource.NewSession())
             {
-                Request request = session.NewAdhocQuery(string.Format(@"xquery version ""1.0-ml"";
-                                                         xdmp:document-delete(""{0}"")", fileName));
-                session.SubmitRequest(request).AsString();
+                try
+                {
+                    Request request = session.NewAdhocQuery(@"xquery version ""1.0-ml"";
+                                                         xdmp:document-delete(""/mldeploy/latest.xml"")");
+                    session.SubmitRequest(request).AsString();
+                }
+                catch (Exception)
+                {
+                    
+                    //Do Nothing, since ML will throw exception if document doesn't exist
+                    //Guarantees the isolation of the integration tests
+                }
+                
 
             }
         }
