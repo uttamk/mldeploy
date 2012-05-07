@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Lib.MLDeploy
+﻿namespace Lib.MLDeploy
 {
     internal class Deployer
     {
@@ -8,7 +6,7 @@ namespace Lib.MLDeploy
 
         internal Deployer(string connectionString, string deltasDir)
         {
-            throw new NotImplementedException();
+            _deltaRepository = new DeltaRepository(deltasDir, connectionString);
         }
 
         internal Deployer(IDeltaRepository deltaRepository)

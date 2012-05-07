@@ -45,14 +45,24 @@ namespace Lib.MLDeploy
 
             using (var session = contentSource.NewSession())
             {
-                Request request = session.NewAdhocQuery(File.ReadAllText(delta.Path));
+                string xqueryToExcecute = File.ReadAllText(delta.Path);
+                Request request = session.NewAdhocQuery(xqueryToExcecute);
                 session.SubmitRequest(request).AsString();
             }
         }
 
         public void UpdateLatestDeltaAs(Delta delta)
         {
-            throw new NotImplementedException();
+            ContentSource contentSource = ContentSourceFactory.NewContentSource(new Uri(_connectionString));
+
+            using (var session = contentSource.NewSession())
+            {
+                string xqueryToExcecute =
+                    string.Format(
+                        @"xdmp:document-insert(""/mldeploy/latest.xml"", <LatestDelta xmlns:m=""http://mldeploy.org""><m:Number>{0}</m:Number></LatestDelta>, ())", delta.Number);
+                Request request = session.NewAdhocQuery(xqueryToExcecute);
+                session.SubmitRequest(request).AsString();
+            }
         }
     }
 }
