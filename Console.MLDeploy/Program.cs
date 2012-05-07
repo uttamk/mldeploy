@@ -11,7 +11,7 @@ namespace Console.MLDeploy
             {
                 if (args.Length < 2)
                 {
-                    System.Console.WriteLine("USAGE : console.mldeploy.exe xcc://username:password@localhost:9001 C:\\Deltas");
+                    System.Console.WriteLine("USAGE : xcc://username:password@host:port deltas_path");
                 }
                 else
                 {
