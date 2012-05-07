@@ -41,16 +41,7 @@ namespace Lib.MLDeploy
         {
             Console.Write(message);
 
-            if(allDeltas.Count() != 0)
-            {
-                foreach (var delta in allDeltas)
-                {
-                    Console.Write(string.Format("{0}, ", delta.Number));
-                }
-            }else
-            {
-                Console.Write("none");
-            }
+            Console.Write(allDeltas.Count() != 0 ? string.Join(", ", allDeltas.Select(d => d.Number)) : "none");
 
             Console.WriteLine();
         }
