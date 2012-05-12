@@ -8,7 +8,7 @@ namespace Lib.MLDeploy
     {
         private readonly IDeltaRepository _deltaRepository;
 
-        public Deployer(string connectionString, string deltasDir) : this(new DeltaRepository(deltasDir, connectionString))
+        public Deployer(string connectionString, string deltasDir) : this(new DeltaRepository(connectionString, deltasDir))
         {
         }
 

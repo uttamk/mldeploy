@@ -1,5 +1,6 @@
 ﻿using System;
-using Lib.MLDeploy;
+using System.Collections.Generic;
+using ManyConsole;
 
 namespace Console.MLDeploy
 {
@@ -7,21 +8,22 @@ namespace Console.MLDeploy
     {
         private static void Main(string[] args)
         {
+            var commands = new List<ConsoleCommand>
+                                      {
+                                          new DeployCommand()
+                                      };
             try
             {
-                if (args.Length < 2)
-                {
-                    System.Console.WriteLine("USAGE : xcc://username:password@host:port deltas_path");
-                }
-                else
-                {
-                    new Deployer(args[0], args[1]).Deploy();
-                }
-            }
-            catch (Exception e)
+                ConsoleCommandDispatcher.DispatchCommand(commands, args, System.Console.Out);
+
+            }catch(Exception ex)
             {
-                System.Console.WriteLine(e.StackTrace);
+                System.Console.WriteLine(ex.StackTrace);
+                Environment.Exit(-1);
             }
+
+            Environment.Exit(0);
+
         }
     }
 }

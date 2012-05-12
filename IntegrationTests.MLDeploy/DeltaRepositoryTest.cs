@@ -20,7 +20,7 @@ namespace IntegrationTests.MLDeploy
             File.WriteAllText(string.Format("{0}\\1.xqy",path), "blah");
             File.WriteAllText(string.Format("{0}\\2.xqy", path), "blah");
 
-            List<Delta> allDeltas = new DeltaRepository(path, null).GetAllDeltas();
+            List<Delta> allDeltas = new DeltaRepository(null, path).GetAllDeltas();
 
             Assert.AreEqual(2, allDeltas.Count);
             Assert.IsNotNull(allDeltas.Find(d=>d.Number == 1L && d.Path == "..\\Deltas\\1.xqy"));
@@ -39,7 +39,7 @@ namespace IntegrationTests.MLDeploy
             const string file = "..\\Deltas\\1.xqy";
             File.WriteAllText(file, @"xdmp:document-insert(""shouldapplydelta.xml"", <shouldapplydelta>a</shouldapplydelta>)");
 
-            new DeltaRepository(null, connectionString).ApplyDelta(new Delta(1L, file));
+            new DeltaRepository(connectionString, null).ApplyDelta(new Delta(1L, file));
 
             AssertThatTheDeltaWasApplied("<shouldapplydelta>a</shouldapplydelta>", connectionString);
 
@@ -54,7 +54,7 @@ namespace IntegrationTests.MLDeploy
         {
             const string connectionString = "xcc://admin:password@localhost:9001";
 
-            new DeltaRepository(null, connectionString).UpdateLatestDeltaAs(new Delta(2L, "\\.Deltas\\1.xqy"));
+            new DeltaRepository(connectionString, null).UpdateLatestDeltaAs(new Delta(2L, "\\.Deltas\\1.xqy"));
 
             AssertThatTheLatestDeltaIs(2L, connectionString);
 
@@ -67,7 +67,7 @@ namespace IntegrationTests.MLDeploy
             const string connectionString = "xcc://admin:password@localhost:9001";
             DeleteTheLatestDeltaInTheDatabase(connectionString);
 
-            Delta latestDelta = new DeltaRepository(null, connectionString).GetLatestDeltaInDatabase();
+            Delta latestDelta = new DeltaRepository(connectionString, null).GetLatestDeltaInDatabase();
 
             Assert.IsInstanceOf(typeof(NoDelta), latestDelta);
 
@@ -79,7 +79,7 @@ namespace IntegrationTests.MLDeploy
         {
             const string connectionString = "xcc://admin:password@localhost:9001";
             SetupLatestDeltaAs(10L, connectionString);
-            Delta latestDelta = new DeltaRepository(null, connectionString).GetLatestDeltaInDatabase();
+            Delta latestDelta = new DeltaRepository(connectionString, null).GetLatestDeltaInDatabase();
             Assert.That(typeof(Delta) ==  latestDelta.GetType());
             Assert.AreEqual(10L, latestDelta.Number);
 

@@ -12,7 +12,7 @@ namespace Lib.MLDeploy
         private readonly string _path;
         private readonly string _connectionString;
 
-        public DeltaRepository(string path, string connectionString)
+        public DeltaRepository(string connectionString, string path)
         {
             _path = path;
             _connectionString = connectionString;
