@@ -8,13 +8,14 @@ namespace Console.MLDeploy
     {
         private static void Main(string[] args)
         {
-            var commands = new List<ConsoleCommand>
-                                      {
-                                          new DeployCommand(),
-                                          new RollBackScriptCommand()
-                                      };
+            
             try
             {
+                var commands = new List<ConsoleCommand>
+                                      {
+                                          new DeployCommand(),
+                                          new ScriptCommand()
+                                      };
                 ConsoleCommandDispatcher.DispatchCommand(commands, args, System.Console.Out);
 
             }catch(Exception ex)

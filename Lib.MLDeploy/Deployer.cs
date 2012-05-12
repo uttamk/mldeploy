@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Lib.MLDeploy
@@ -39,11 +38,11 @@ namespace Lib.MLDeploy
 
         private void Print(string message, IEnumerable<Delta> allDeltas)
         {
-            Console.Write(message);
+            System.Console.Write(message);
 
-            Console.Write(allDeltas.Count() != 0 ? string.Join(", ", allDeltas.Select(d => d.Number)) : "none");
+            System.Console.Write(allDeltas.Count() != 0 ? string.Join(", ", allDeltas.Select(d => d.Number)) : "none");
 
-            Console.WriteLine();
+            System.Console.WriteLine();
         }
     }
 }
