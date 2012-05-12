@@ -10,7 +10,8 @@ namespace Console.MLDeploy
         {
             var commands = new List<ConsoleCommand>
                                       {
-                                          new DeployCommand()
+                                          new DeployCommand(),
+                                          new RollBackScriptCommand()
                                       };
             try
             {
