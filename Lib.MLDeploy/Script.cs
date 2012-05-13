@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Lib.MLDeploy
 {
@@ -6,6 +8,8 @@ namespace Lib.MLDeploy
     {
         private readonly IScriptRepository _scriptRepository;
         private readonly IDeltaRepository _deltasRepository;
+        private long _fromDelta = 0;
+        private long _toDelta = Int64.MaxValue;
 
 
         public Script(IScriptRepository scriptRepository, IDeltaRepository deltasRepository)
@@ -16,11 +20,16 @@ namespace Lib.MLDeploy
 
         internal Script StartingFrom(string fromDelta)
         {
-            return this;
+            Int64.TryParse(fromDelta, out _fromDelta);
+           return this;
         }
 
         internal Script EndingWith(string toDelta)
         {
+            Int64.TryParse(toDelta, out _toDelta);
+
+            if (_toDelta == 0)
+                _toDelta = Int64.MaxValue;
             return this;
         }
 
@@ -28,7 +37,28 @@ namespace Lib.MLDeploy
         {
             var allDeltas = _deltasRepository.GetAllDeltas();
 
-            _scriptRepository.GenerateDeployScriptFor(allDeltas);
+            var applicableDeltas = allDeltas.OrderBy(d => d.Number)
+                .Where(d => d.Number >= _fromDelta)
+                .Where(d => d.Number <= _toDelta)
+                .ToList();
+            if(applicableDeltas.Any())
+            {
+               Print("Generating deploy script for deltas ", applicableDeltas);
+                _scriptRepository.GenerateDeployScriptFor(applicableDeltas);
+            }
+            else
+            {
+                Console.WriteLine("[mldeploy]No deltas applicable to generate script");
+            }
+        }
+
+        private void Print(string message, IEnumerable<Delta> allDeltas)
+        {
+            Console.Write(message);
+
+            Console.Write(allDeltas.Count() != 0 ? string.Join(", ", allDeltas.Select(d => d.Number)) : "none");
+
+            Console.WriteLine();
         }
     }
 }

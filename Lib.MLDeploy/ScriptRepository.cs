@@ -21,6 +21,8 @@ namespace Lib.MLDeploy
 
             foreach (var delta in deltas)
             {
+                Console.WriteLine(string.Format("[mldeploy] Appending delta {0}", delta.Number));
+
                 scriptContent.Append(string.Format("(:delta {0} starts:)", delta.Number));
                 scriptContent.AppendLine();
                 scriptContent.Append(File.ReadAllText(delta.Path));
