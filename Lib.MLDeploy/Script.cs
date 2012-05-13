@@ -43,12 +43,12 @@ namespace Lib.MLDeploy
                 .ToList();
             if(applicableDeltas.Any())
             {
-               Print("Generating deploy script for deltas ", applicableDeltas);
+               Print("[mldeploy] Generating deploy script for deltas ", applicableDeltas);
                 _scriptRepository.GenerateDeployScriptFor(applicableDeltas);
             }
             else
             {
-                Console.WriteLine("[mldeploy]No deltas applicable to generate script");
+                Console.WriteLine("[mldeploy] No deltas applicable to generate script");
             }
         }
 
@@ -71,12 +71,12 @@ namespace Lib.MLDeploy
                 .ToList();
             if (applicableDeltas.Any())
             {
-                Print("Generating rollback script for deltas ", applicableDeltas);
+                Print("[mldeploy] Generating rollback script for deltas ", applicableDeltas);
                 _scriptRepository.GenerateRollBackScriptFor(applicableDeltas);
             }
             else
             {
-                Console.WriteLine("[mldeploy]No deltas applicable to generate script");
+                Console.WriteLine("[mldeploy] No deltas applicable to generate script");
             }
         }
     }
