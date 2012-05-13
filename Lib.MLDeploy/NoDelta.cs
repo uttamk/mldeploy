@@ -1,6 +1,4 @@
-﻿using Lib.MLDeploy;
-
-namespace UnitTests.MLDeploy
+﻿namespace Lib.MLDeploy
 {
     internal class NoDelta : Delta
     {

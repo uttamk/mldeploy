@@ -5,14 +5,16 @@ namespace Lib.MLDeploy
 {
     internal class Deployer
     {
+        private readonly IDeployRepository _deployRepository;
         private readonly IDeltaRepository _deltaRepository;
 
-        public Deployer(string connectionString, string deltasDir) : this(new DeltaRepository(connectionString, deltasDir))
+        public Deployer(string connectionString, string deltasDir) : this(new DeployRepository(connectionString, deltasDir), new DeltaRepository(deltasDir))
         {
         }
 
-        internal Deployer(IDeltaRepository deltaRepository)
+        internal Deployer(IDeployRepository deployRepository, IDeltaRepository deltaRepository)
         {
+            _deployRepository = deployRepository;
             _deltaRepository = deltaRepository;
         }
 
@@ -21,7 +23,7 @@ namespace Lib.MLDeploy
             var allDeltas = _deltaRepository.GetAllDeltas();
             Print("[mldeploy] Deltas found: ", allDeltas);
 
-            var latestDeltaInDatabase = _deltaRepository.GetLatestDeltaInDatabase();
+            var latestDeltaInDatabase = _deployRepository.GetLatestDeltaInDatabase();
 
             var applicableDeltas = allDeltas.Where(delta=>delta.Number > latestDeltaInDatabase.Number)
                                             .OrderBy(delta=>delta.Number);
@@ -31,8 +33,8 @@ namespace Lib.MLDeploy
 
             foreach (var delta in applicableDeltas)
             {
-                _deltaRepository.ApplyDelta(delta);
-                _deltaRepository.UpdateLatestDeltaAs(delta);
+                _deployRepository.ApplyDelta(delta);
+                _deployRepository.UpdateLatestDeltaAs(delta);
             }
         }
 

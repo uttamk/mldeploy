@@ -8,11 +8,13 @@ namespace UnitTests.MLDeploy
     [TestFixture]
     public class DeployerTest
     {
+        private IDeployRepository _deployRepository;
         private IDeltaRepository _deltaRepository;
 
         [SetUp]
         public void Setup()
         {
+            _deployRepository = MockRepository.GenerateMock<IDeployRepository>();
             _deltaRepository = MockRepository.GenerateMock<IDeltaRepository>();
         }
 
@@ -26,16 +28,16 @@ namespace UnitTests.MLDeploy
                                                                             delta1,
                                                                             delta2
                                                                         });
-            _deltaRepository.Stub(dr => dr.GetLatestDeltaInDatabase()).Return(new NoDelta());
+            _deployRepository.Stub(dr => dr.GetLatestDeltaInDatabase()).Return(new NoDelta());
 
 
-            new Deployer(_deltaRepository).Deploy();
+            new Deployer(_deployRepository, _deltaRepository).Deploy();
 
 
-            _deltaRepository.AssertWasCalled(dr=>dr.ApplyDelta(delta1));
-            _deltaRepository.AssertWasCalled(dr=>dr.UpdateLatestDeltaAs(delta1));
-            _deltaRepository.AssertWasCalled(dr=>dr.ApplyDelta(delta2));
-            _deltaRepository.AssertWasCalled(dr=>dr.UpdateLatestDeltaAs(delta2));
+            _deployRepository.AssertWasCalled(dr=>dr.ApplyDelta(delta1));
+            _deployRepository.AssertWasCalled(dr=>dr.UpdateLatestDeltaAs(delta1));
+            _deployRepository.AssertWasCalled(dr=>dr.ApplyDelta(delta2));
+            _deployRepository.AssertWasCalled(dr=>dr.UpdateLatestDeltaAs(delta2));
 
 
         }
@@ -52,20 +54,20 @@ namespace UnitTests.MLDeploy
                                                                             delta2,
                                                                             delta3
                                                                         });
-            _deltaRepository.Stub(dr => dr.GetLatestDeltaInDatabase()).Return(delta1);
+            _deployRepository.Stub(dr => dr.GetLatestDeltaInDatabase()).Return(delta1);
 
 
 
-            new Deployer(_deltaRepository).Deploy();
+            new Deployer(_deployRepository, _deltaRepository).Deploy();
 
 
-            _deltaRepository.AssertWasNotCalled(dr => dr.ApplyDelta(delta1));
-            _deltaRepository.AssertWasNotCalled(dr => dr.UpdateLatestDeltaAs(delta1));
+            _deployRepository.AssertWasNotCalled(dr => dr.ApplyDelta(delta1));
+            _deployRepository.AssertWasNotCalled(dr => dr.UpdateLatestDeltaAs(delta1));
 
-            _deltaRepository.AssertWasCalled(dr => dr.ApplyDelta(delta2));
-            _deltaRepository.AssertWasCalled(dr => dr.UpdateLatestDeltaAs(delta2));
-            _deltaRepository.AssertWasCalled(dr => dr.ApplyDelta(delta3));
-            _deltaRepository.AssertWasCalled(dr => dr.UpdateLatestDeltaAs(delta3));
+            _deployRepository.AssertWasCalled(dr => dr.ApplyDelta(delta2));
+            _deployRepository.AssertWasCalled(dr => dr.UpdateLatestDeltaAs(delta2));
+            _deployRepository.AssertWasCalled(dr => dr.ApplyDelta(delta3));
+            _deployRepository.AssertWasCalled(dr => dr.UpdateLatestDeltaAs(delta3));
 
 
         }

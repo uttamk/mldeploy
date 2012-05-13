@@ -1,0 +1,79 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Marklogic.Xcc;
+
+namespace Lib.MLDeploy
+{
+    internal class DeployRepository:IDeployRepository
+    {
+        private readonly string _path;
+        private readonly string _connectionString;
+
+        public DeployRepository(string connectionString, string path)
+        {
+            _path = path;
+            _connectionString = connectionString;
+        }
+
+
+        public Delta GetLatestDeltaInDatabase()
+        {
+            ContentSource contentSource = ContentSourceFactory.NewContentSource(new Uri(_connectionString));
+
+
+            using (var session = contentSource.NewSession())
+            {
+                const string xqueryToExcecute = @"xquery version ""1.0-ml"";
+                                           declare namespace m=""http://mldeploy.org"";
+                                           for $doc in //*:LatestDelta 
+                                           return $doc/m:Number/text()";
+
+                Request request = session.NewAdhocQuery(xqueryToExcecute);
+                string result = session.SubmitRequest(request).AsString();
+
+                if(result == string.Empty)
+                {
+                    return new NoDelta();
+                }
+
+                long number = Int64.Parse(result);
+                return new Delta(number, string.Format("{0}\\{1}.xqy", _path, number));
+            }
+        }
+
+        public void ApplyDelta(Delta delta)
+        {
+            ContentSource contentSource = ContentSourceFactory.NewContentSource(new Uri(_connectionString));
+
+            Console.WriteLine("[mldeploy] Applying delta "+ delta.Number);
+
+            using (var session = contentSource.NewSession())
+            {
+                string xqueryToExcecute = File.ReadAllText(delta.Path);
+                Request request = session.NewAdhocQuery(xqueryToExcecute);
+                session.SubmitRequest(request).AsString();
+            }
+        }
+
+        public void UpdateLatestDeltaAs(Delta delta)
+        {
+            ContentSource contentSource = ContentSourceFactory.NewContentSource(new Uri(_connectionString));
+
+            using (var session = contentSource.NewSession())
+            {
+                string xqueryToExcecute =
+                    string.Format(
+                        @"xdmp:document-insert(""/mldeploy/latest.xml"", <LatestDelta xmlns:m=""http://mldeploy.org""><m:Number>{0}</m:Number></LatestDelta>, ())", delta.Number);
+                Request request = session.NewAdhocQuery(xqueryToExcecute);
+                session.SubmitRequest(request).AsString();
+            }
+        }
+
+        public void GenerateDeployScriptFor(List<Delta> deltas)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

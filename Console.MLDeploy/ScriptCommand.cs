@@ -33,20 +33,17 @@ namespace Console.MLDeploy
         {
             if (_isRollback)
             {
-                new RollBackScript()
-                    .From(_deltasPath)
-                    .To(_outputpath)
+                new Script(new ScriptRepository(_outputpath), new DeltaRepository(_deltasPath))
                     .StartingFrom(_fromDelta)
                     .EndingWith(_toDelta)
-                    .Generate();
-            }else
+                    .GenerateDeploy();
+            }
+            else
             {
-                new DeployScript()
-                   .From(_deltasPath)
-                   .To(_outputpath)
-                   .StartingFrom(_fromDelta)
-                   .EndingWith(_toDelta)
-                   .Generate();
+                new Script(new ScriptRepository(_outputpath), new DeltaRepository(_deltasPath))
+                    .StartingFrom(_fromDelta)
+                    .EndingWith(_toDelta)
+                    .GenerateDeploy();
             }
 
             return 0;
