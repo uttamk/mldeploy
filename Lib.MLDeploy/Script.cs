@@ -60,5 +60,24 @@ namespace Lib.MLDeploy
 
             Console.WriteLine();
         }
+
+        public void GenerateRollback()
+        {
+            var allDeltas = _deltasRepository.GetAllDeltas();
+
+            var applicableDeltas = allDeltas.Where(d => d.Number >= _fromDelta)
+                .Where(d => d.Number <= _toDelta)
+                .OrderByDescending(d => d.Number)
+                .ToList();
+            if (applicableDeltas.Any())
+            {
+                Print("Generating rollback script for deltas ", applicableDeltas);
+                _scriptRepository.GenerateRollBackScriptFor(applicableDeltas);
+            }
+            else
+            {
+                Console.WriteLine("[mldeploy]No deltas applicable to generate script");
+            }
+        }
     }
 }

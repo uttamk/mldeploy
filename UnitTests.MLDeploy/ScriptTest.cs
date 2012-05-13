@@ -20,7 +20,26 @@ namespace UnitTests.MLDeploy
         }
 
         [Test]
-        public void Should_generate_deploy_script_for_all_deltas_if_from_and_to_are_not_specified()
+        public void Should_generate_deploy_script_for_all_deltas_in_right_order_if_from_and_to_are_not_specified()
+        {
+            var allDeltas = new List<Delta>
+                                {
+                                    new Delta(2, ""),
+                                    new Delta(1, "")
+                                };
+            _deltasRepository.Stub(dr => dr.GetAllDeltas()).Return(allDeltas);
+            new Script(_scriptRepository, _deltasRepository).GenerateDeploy();
+
+            var expectedDeltas = new List<Delta>
+                                {
+                                    new Delta(1, ""),
+                                    new Delta(2, "")
+                                }; ;
+            _scriptRepository.AssertWasCalled(dr => dr.GenerateDeployScriptFor(Arg<List<Delta>>.Matches(d=>MatchDeltas(d, expectedDeltas))));
+        }
+
+        [Test]
+        public void Should_generate_rollback_script_for_all_deltas_in_descending_order_if_from_and_to_are_not_specified()
         {
             var allDeltas = new List<Delta>
                                 {
@@ -28,9 +47,15 @@ namespace UnitTests.MLDeploy
                                     new Delta(2, "")
                                 };
             _deltasRepository.Stub(dr => dr.GetAllDeltas()).Return(allDeltas);
-            new Script(_scriptRepository, _deltasRepository).GenerateDeploy();
+            new Script(_scriptRepository, _deltasRepository).GenerateRollback();
 
-            _scriptRepository.AssertWasCalled(dr => dr.GenerateDeployScriptFor(allDeltas));
+            var expectedDeltas = new List<Delta>
+                                {
+                                    new Delta(2, ""),
+                                    new Delta(1, "")
+                                }; 
+
+            _scriptRepository.AssertWasCalled(dr => dr.GenerateRollBackScriptFor(Arg<List<Delta>>.Matches(d=>MatchDeltas(d, expectedDeltas))));
         }
 
         [Test]
@@ -52,6 +77,29 @@ namespace UnitTests.MLDeploy
                                      };
             _scriptRepository.AssertWasCalled(
                 dr => dr.GenerateDeployScriptFor(Arg<List<Delta>>.Matches(d => MatchDeltas(d, expectedDeltas))));
+        }
+        
+        [Test]
+        public void Should_generate_rollback_script_for_when_the_from_delta_is_specified()
+        {
+            var allDeltas = new List<Delta>
+                                {
+                                    new Delta(1, ""),
+                                    new Delta(2, ""),
+                                    new Delta(3, "")
+                                };
+            _deltasRepository.Stub(dr => dr.GetAllDeltas()).Return(allDeltas);
+
+            new Script(_scriptRepository, _deltasRepository).StartingFrom("2")
+                                                            .GenerateRollback() ;
+
+            var expectedDeltas = new List<Delta>
+                                     {
+                                         new Delta(3, ""),
+                                         new Delta(2, "")
+                                     };
+            _scriptRepository.AssertWasCalled(
+                dr => dr.GenerateRollBackScriptFor(Arg<List<Delta>>.Matches(d => MatchDeltas(d, expectedDeltas))));
         }
 
         [Test]
@@ -78,6 +126,31 @@ namespace UnitTests.MLDeploy
         }
 
         [Test]
+        public void Should_generate_rollback_script_for_when_only_the_to_delta_is_specified()
+        {
+            var allDeltas = new List<Delta>
+                                {
+                                    new Delta(1, ""),
+                                    new Delta(2, ""),
+                                    new Delta(3, ""),
+                                    new Delta(4, "")
+                                };
+            _deltasRepository.Stub(dr => dr.GetAllDeltas()).Return(allDeltas);
+
+            new Script(_scriptRepository, _deltasRepository).EndingWith("3")
+                                                            .GenerateRollback();
+
+            var expectedDeltas = new List<Delta>
+                                     {
+                                         new Delta(3, ""),
+                                         new Delta(2, ""),
+                                         new Delta(1, "")
+                                     };
+            _scriptRepository.AssertWasCalled(
+                dr => dr.GenerateRollBackScriptFor(Arg<List<Delta>>.Matches(d => MatchDeltas(d, expectedDeltas))));
+        }
+
+        [Test]
         public void Should_generate_deploy_script_when_both_from_and_to_deltas_are_specified()
         {
             var allDeltas = new List<Delta>
@@ -100,6 +173,30 @@ namespace UnitTests.MLDeploy
                                      };
             _scriptRepository.AssertWasCalled(
                 dr => dr.GenerateDeployScriptFor(Arg<List<Delta>>.Matches(d => MatchDeltas(d, expectedDeltas))));
+        }
+        
+        public void Should_generate_rollback_script_when_both_from_and_to_deltas_are_specified()
+        {
+            var allDeltas = new List<Delta>
+                                {
+                                    new Delta(1, ""),
+                                    new Delta(2, ""),
+                                    new Delta(3, ""),
+                                    new Delta(4, "")
+                                };
+            _deltasRepository.Stub(dr => dr.GetAllDeltas()).Return(allDeltas);
+
+            new Script(_scriptRepository, _deltasRepository).StartingFrom("2")
+                                                            .EndingWith("3")
+                                                            .GenerateRollback();
+
+            var expectedDeltas = new List<Delta>
+                                     {
+                                         new Delta(3, ""),
+                                         new Delta(2, "")
+                                     };
+            _scriptRepository.AssertWasCalled(
+                dr => dr.GenerateRollBackScriptFor(Arg<List<Delta>>.Matches(d => MatchDeltas(d, expectedDeltas))));
         }
 
         private bool MatchDeltas(List<Delta> deltas, List<Delta> expectedDeltas)

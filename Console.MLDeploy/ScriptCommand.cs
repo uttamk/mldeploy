@@ -36,7 +36,7 @@ namespace Console.MLDeploy
                 new Script(new ScriptRepository(_outputpath), new DeltaRepository(_deltasPath))
                     .StartingFrom(_fromDelta)
                     .EndingWith(_toDelta)
-                    .GenerateDeploy();
+                    .GenerateRollback();
             }
             else
             {

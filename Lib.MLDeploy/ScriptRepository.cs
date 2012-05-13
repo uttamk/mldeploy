@@ -35,6 +35,11 @@ namespace Lib.MLDeploy
             WriteToFile(scriptContent);
         }
 
+        public void GenerateRollBackScriptFor(List<Delta> deltas)
+        {
+            throw new NotImplementedException();
+        }
+
         private void WriteToFile(StringBuilder scriptContent)
         {
             if (!Directory.Exists(_outputPath))
