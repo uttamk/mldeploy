@@ -64,5 +64,31 @@ namespace IntegrationTests.MLDeploy
             Directory.Delete(path, true);
 
         }
+        
+        [Test]
+        public void Should_generate_rollback_as_nothing_for_old_deltas_where_no_rollback_specified()
+        {
+            const string path = "..\\Deltas";
+            const string outputPath = "..\\Deltas\\Script";
+
+            Directory.CreateDirectory(path);
+            File.WriteAllText(string.Format("{0}\\1.xqy", path), @"xdmp:document-insert(""blah.xml"", <blah></blah>);");
+
+            new ScriptRepository(outputPath).GenerateRollBackScriptFor(new List<Delta>
+                                                                         {
+                                                                             new Delta(1L, "..\\Deltas\\1.xqy"),
+                                                                         });
+
+
+
+            var scriptContent = File.ReadAllText(string.Format("{0}\\rollbackscript.xqy", outputPath));
+            Assert.IsNotNull(scriptContent);
+            Assert.That(!scriptContent.Contains(@"xdmp:document-insert(""blah.xml"", <blah></blah>);"));
+            Assert.AreEqual("(:rollback for delta 1 starts:)\r\n\r\n(:rollback for delta 1 ends:)\r\n\r\n", scriptContent);
+
+
+            Directory.Delete(path, true);
+
+        }
     }
 }

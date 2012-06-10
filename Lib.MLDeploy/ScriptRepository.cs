@@ -64,7 +64,8 @@ namespace Lib.MLDeploy
         {
             var separators = new[] { "(:Rollback" };
             string[] rollbackContent = readAllText.Split(separators, StringSplitOptions.None);
-            
+            if (rollbackContent.Length < 2)
+                return string.Empty;
             //Remove the trailing :)
             return rollbackContent[1].Remove(rollbackContent[1].Length-2);
         }

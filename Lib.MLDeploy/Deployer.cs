@@ -20,7 +20,8 @@ namespace Lib.MLDeploy
 
         public void Deploy()
         {
-            var allDeltas = _deltaRepository.GetAllDeltas();
+            var allDeltas = _deltaRepository.GetAllDeltas()
+                                            .OrderBy(d=>d.Number);
             Print("[mldeploy] Deltas found: ", allDeltas);
 
             var latestDeltaInDatabase = _deployRepository.GetLatestDeltaInDatabase();
