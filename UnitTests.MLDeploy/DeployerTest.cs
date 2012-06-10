@@ -21,8 +21,8 @@ namespace UnitTests.MLDeploy
         [Test]
         public void Should_deploy_all_deltas_for_a_fresh_database()
         {
-            var delta1 = new Delta(1L, "C:\\Deltas");
-            var delta2 = new Delta(2L, "C:\\Deltas");
+            var delta1 = new Delta(1L, "C:\\Deltas", "test delta");
+            var delta2 = new Delta(2L, "C:\\Deltas", "test delta");
             _deltaRepository.Stub(dr => dr.GetAllDeltas()).Return(new List<Delta>
                                                                         {
                                                                             delta1,
@@ -45,9 +45,9 @@ namespace UnitTests.MLDeploy
         [Test]
         public void Should_deploy_deltas_newer_than_the_latest_delta_already_in_the_database()
         {
-            var delta1 = new Delta(1L, "C:\\Deltas\\1.xqy");
-            var delta2 = new Delta(2L, "C:\\Deltas\\2.xqy");
-            var delta3 = new Delta(3L, "C:\\Deltas\\3.xqy");
+            var delta1 = new Delta(1L, "C:\\Deltas\\1.xqy", "test delta 1");
+            var delta2 = new Delta(2L, "C:\\Deltas\\2.xqy", "test delta 2");
+            var delta3 = new Delta(3L, "C:\\Deltas\\3.xqy", "test delta 3");
             _deltaRepository.Stub(dr => dr.GetAllDeltas()).Return(new List<Delta>
                                                                         {
                                                                             delta1,

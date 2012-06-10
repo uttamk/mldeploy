@@ -3,6 +3,6 @@
     internal class NoDelta : Delta
     {
 
-        public NoDelta() : base(0L, ""){}
+        public NoDelta() : base(0L, "", ""){}
     }
 }

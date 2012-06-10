@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Delta.cs" />
+    <Compile Include="DeltaFileName.cs" />
     <Compile Include="DeltaRepository.cs" />
     <Compile Include="DeployRepository.cs" />
     <Compile Include="Deployer.cs" />

@@ -20,8 +20,8 @@ namespace IntegrationTests.MLDeploy
 
             new ScriptRepository(outputPath).GenerateDeployScriptFor(new List<Delta>
                                                                          {
-                                                                             new Delta(1L, "..\\Deltas\\1.xqy"),
-                                                                             new Delta(2L, "..\\Deltas\\2.xqy")
+                                                                             new Delta(1L, "..\\Deltas\\1.xqy", "test delta"),
+                                                                             new Delta(2L, "..\\Deltas\\2.xqy", "test delta")
                                                                          });
 
 
@@ -47,8 +47,8 @@ namespace IntegrationTests.MLDeploy
 
             new ScriptRepository(outputPath).GenerateRollBackScriptFor(new List<Delta>
                                                                          {
-                                                                             new Delta(1L, "..\\Deltas\\1.xqy"),
-                                                                             new Delta(2L, "..\\Deltas\\2.xqy")
+                                                                             new Delta(1L, "..\\Deltas\\1.xqy", "test delta"),
+                                                                             new Delta(2L, "..\\Deltas\\2.xqy", "test delta")
                                                                          });
 
 
@@ -76,7 +76,7 @@ namespace IntegrationTests.MLDeploy
 
             new ScriptRepository(outputPath).GenerateRollBackScriptFor(new List<Delta>
                                                                          {
-                                                                             new Delta(1L, "..\\Deltas\\1.xqy"),
+                                                                             new Delta(1L, "..\\Deltas\\1.xqy", "test delta"),
                                                                          });
 
 

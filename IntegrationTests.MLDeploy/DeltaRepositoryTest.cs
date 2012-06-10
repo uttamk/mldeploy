@@ -45,8 +45,8 @@ namespace IntegrationTests.MLDeploy
             List<Delta> allDeltas = new DeltaRepository(Path).GetAllDeltas();
 
             Assert.AreEqual(2, allDeltas.Count);
-            Assert.IsNotNull(allDeltas.Find(d => d.Number == 1L && d.Path == "..\\Deltas\\1 Inserting blah.xqy"));
-            Assert.IsNotNull(allDeltas.Find(d => d.Number == 2L && d.Path == "..\\Deltas\\2 Inserting kaw.xqy"));
+            Assert.IsNotNull(allDeltas.Find(d => d.Number == 1L && d.Path == "..\\Deltas\\1 Inserting blah.xqy" && d.Description == "Inserting blah"));
+            Assert.IsNotNull(allDeltas.Find(d => d.Number == 2L && d.Path == "..\\Deltas\\2 Inserting kaw.xqy" && d.Description == "Inserting kaw"));
         }
 
         [TearDown]
