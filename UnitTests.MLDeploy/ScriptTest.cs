@@ -34,7 +34,7 @@ namespace UnitTests.MLDeploy
                                 {
                                     new Delta(1, ""),
                                     new Delta(2, "")
-                                }; ;
+                                };
             _scriptRepository.AssertWasCalled(dr => dr.GenerateDeployScriptFor(Arg<List<Delta>>.Matches(d=>MatchDeltas(d, expectedDeltas))));
         }
 
@@ -71,7 +71,7 @@ namespace UnitTests.MLDeploy
             new Script(_scriptRepository, _deltasRepository).StartingFrom("2")
                 .GenerateDeploy();
 
-            var expectedDeltas = new List<Delta>()
+            var expectedDeltas = new List<Delta>
                                      {
                                          new Delta(2, "")
                                      };

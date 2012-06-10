@@ -20,6 +20,7 @@ namespace Console.MLDeploy
 
             }catch(Exception ex)
             {
+                System.Console.WriteLine(ex.Message);
                 System.Console.WriteLine(ex.StackTrace);
                 Environment.Exit(-1);
             }

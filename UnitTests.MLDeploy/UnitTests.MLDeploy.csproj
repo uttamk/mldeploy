@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeltaFileNameTest.cs" />
     <Compile Include="DeployerTest.cs" />
     <Compile Include="ScriptTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
