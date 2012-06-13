@@ -9,8 +9,8 @@ namespace Console.MLDeploy
 
         private const string DELTA_PATH_DESCRIPTION = "The path where the deltas reside";
         private const string OUTPUT_PATH_DESCRIPTION = "Output path for the script";
-        private const string FROM_DELTA_DESCRIPTION = "The delta to start the script";
-        private const string TO_DELTA_DESCRIPTION = "The last delta in the script";
+        private const string FROM_DELTA_DESCRIPTION = "The delta number to start scripting";
+        private const string TO_DELTA_DESCRIPTION = "The last delta number in the script";
         private const string ROLLBACK_DESCRIPTION = "If the script type is rollback";
 
         private string _deltasPath;

@@ -7,6 +7,7 @@ It uses the XCC .NET connector provided by Marklogic to make a connection to the
 Usage
 ==============================================================================
 It runs as an exe. You can invoke it from powershell/nant or any build tool.
+To build it, just compile the compile the solution in visual studio 2010.
 
 Running Console.mldeploy.exe gives you the following
 
@@ -27,10 +28,12 @@ Running Console.mldeploy.exe gives you the following
 
  
 
-The delta files should be xquery files of the format number.xqy (where number is any positive integer).
-eg. 1.xqy, 100.xqy. Files named like foo.xqy in the deltas path will crash the exe (as of version now)
+The delta files should be xquery files of the format number[description].xqy (where number is any positive integer).
+eg. 1 inserting foo.xqy, 100.xqy. Files named like foo.xqy (without a leading number) will throw an exception.
 =====================================================================================================
- Running Console.mldeploy.exe script gives you
+Running Console.mldeploy.exe script gives you
+
+ 
 Expected usage: Console.MLDeploy.exe script <options>
 <options> available:
       --deltaspath, -d[=VALUE]
@@ -42,9 +45,10 @@ Expected usage: Console.MLDeploy.exe script <options>
       --enddelta, -e[=VALUE] The last delta in the script
       --rollback, -r         If the script type is rollback
 	  
-	  The rollback scripts should be embedded as xquery commentsin the delta files themselves like the example below
+	  
+The rollback scripts should be embedded as xquery comments in the delta files themselves like the example below
 	 
-(:Xquery comment:)
+(:Xquery comment followed by delta:)
 xdmp:document-insert("/foo.xml", <foo>bar</foo>);
 
 (:Rollback
