@@ -7,7 +7,8 @@ It uses the XCC .NET connector provided by Marklogic to make a connection to the
 Usage
 ==============================================================================
 It runs as an exe. You can invoke it from powershell/nant or any build tool.
-To build it, just compile the solution in visual studio 2010.
+
+To build it, just compile the compile the solution in visual studio 2010.
 
 Running Console.mldeploy.exe gives you the following
 
