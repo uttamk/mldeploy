@@ -1,6 +1,7 @@
-
-/*/bin
-/*/obj
+/src/*/bin
+/src/*/obj
+/src/*/obj
 *.user
-/_ReSharper.MLDeploy/*
+src/_ReSharper.MLDeploy/*
+_ReSharper.MLDeploy/*
 *.suo
