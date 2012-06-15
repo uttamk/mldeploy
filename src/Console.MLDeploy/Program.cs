@@ -14,7 +14,8 @@ namespace Console.MLDeploy
                 var commands = new List<ConsoleCommand>
                                       {
                                           new DeployCommand(),
-                                          new ScriptCommand()
+                                          new ScriptCommand(),
+                                          new RunScriptCommand()
                                       };
                 ConsoleCommandDispatcher.DispatchCommand(commands, args, System.Console.Out);
 

@@ -49,6 +49,7 @@
     <Compile Include="DeltaRepositoryTest.cs" />
     <Compile Include="DeployRepositoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScriptRunnerTest.cs" />
     <Compile Include="ScriptRepositoryTest.cs" />
   </ItemGroup>
   <ItemGroup>

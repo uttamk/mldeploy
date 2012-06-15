@@ -11,6 +11,20 @@ namespace IntegrationTests.MLDeploy
     {
         private const string _connectionString = "xcc://admin:password@localhost:9001";
 
+        [SetUp]
+        public void SetUp()
+        {
+            CleanUpTheDatabase();
+            DeleteTheLatestDeltaInTheDatabase();
+        }
+        
+        [TearDown]
+        public void Teardown()
+        {
+            CleanUpTheDatabase();
+            DeleteTheLatestDeltaInTheDatabase();
+        }
+
         [Test]
         public void Should_apply_delta()
         {
@@ -25,6 +39,7 @@ namespace IntegrationTests.MLDeploy
 
             //CleanUp
             DeleteTheLatestDeltaInTheDatabase();
+            CleanUpTheDatabase();
             Directory.Delete(path, true);
             
         }
@@ -68,7 +83,7 @@ namespace IntegrationTests.MLDeploy
             DeleteTheLatestDeltaInTheDatabase();
 
         }
-        
+
         [Test]
         public void Should_get_latest_delta_when_there_is_an_existing_delta_in_the_database_without_any_description()
         {
@@ -194,6 +209,30 @@ namespace IntegrationTests.MLDeploy
                 Assert.AreEqual(xmlString, result);
             }
             
+        }
+
+        private void CleanUpTheDatabase()
+        {
+            ContentSource contentSource = ContentSourceFactory.NewContentSource(new Uri(_connectionString));
+
+
+            using (var session = contentSource.NewSession())
+            {
+                try
+                {
+                    Request request =
+                        session.NewAdhocQuery(
+                            @"xquery version ""1.0-ml"";
+                                                         xdmp:document-delete(""shouldapplydelta.xml"")");
+                    session.SubmitRequest(request).AsString();
+                }
+                catch
+                {
+
+                    //Do Nothing, since ML will throw exception if document doesn't exist
+                    //Guarantees the isolation of the integration tests
+                }
+            }
         }
     }
 }

@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DeployCommand.cs" />
+    <Compile Include="RunScriptCommand.cs" />
     <Compile Include="ScriptCommand.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
