@@ -16,7 +16,7 @@ namespace Console.MLDeploy
 
         public RunScriptCommand()
         {
-            this.IsCommand("run", COMMAND_DESCRIPTION);
+            this.IsCommand("runscript", COMMAND_DESCRIPTION);
             this.HasRequiredOption("connstring|c:", CONN_STR_MESSAGE, cs => _connectionString = cs);
             this.HasRequiredOption("scriptpath|s:", XQUERY_FILE_MESSAGE, p => _scriptPath = p);
         }

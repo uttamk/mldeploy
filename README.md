@@ -1,21 +1,38 @@
 mldeploy
 ========
 
-This is a db deploy clone for the Marklogic xml database written written in C#.
+This is a db deploy clone for the Marklogic xml database written written in C#. It also lets you run arbitrary xquery files from the command line like sqlcmd.
 It uses the XCC .NET connector provided by Marklogic to make a connection to the database.
+An XDBC server on https will not work because XCC for .net doesn't support https yet. 
+Other types of servers like vanilla HTTP and webdav are not supported.
 
 Usage
 ==============================================================================
-It runs as an exe. You can invoke it from powershell/nant or any build tool.
+It runs as an exe. You can invoke it from the command line or powershell/nant or any build tool.
 
 To build it, just compile the solution in visual studio 2010.
 
 
 Running bin/console.mldeploy.exe gives you the following
 
- deploy      - deploys delta xquery scripts from the specified deltas directo
+    runscript   - runs an xquery script from a file
+   
+    deploy      - deploys delta xquery scripts from the specified deltas directory
+	
+    script      - Generates xquery scripts from the specified deltas directory
+	
+====================================================================================	
+ Running bin/Console.MLDeploy.exe runscript gives you
+ 
+ Expected usage: Console.MLDeploy.exe runscript <options>
+ 
+<options> available:
 
- script      - Generates xquery scripts from the specified deltas directory
+      --connstring, -c[=VALUE]
+                             xcc connection string to the Marklogic XDBC server : For example xcc://username:password@127.0.0.1:8080
+							 
+      --scriptpath, -s[=VALUE]
+                             path to the xquery script
  
  ===============================================================================
  Running bin/console.mldeploy.exe deploy gives you
