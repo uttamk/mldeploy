@@ -17,7 +17,7 @@ namespace UnitTests.MLDeploy
         [Test]
         public void Should_Parse_the_delta_Number_from_the_intial_numbers_in_the_file_name()
         {
-            var deltaNumber = new DeltaFileName("123 Test Query.xqy").DeltaNumber();
+            var deltaNumber = new DeltaFileName("123 Test Query.xqy").Number;
             Assert.AreEqual(123L, deltaNumber);
         }
 

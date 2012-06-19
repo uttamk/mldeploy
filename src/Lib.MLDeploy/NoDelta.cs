@@ -2,7 +2,6 @@
 {
     internal class NoDelta : Delta
     {
-
-        public NoDelta() : base(0L, "", ""){}
+        internal NoDelta() : base(0L, "", ""){}
     }
 }

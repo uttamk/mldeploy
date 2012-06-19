@@ -11,9 +11,8 @@
         internal long Number { get; private set; }
         internal string Path { get; private set; }
 
-      
 
-        public Delta(long number, string path, string description)
+        internal Delta(long number, string path, string description)
         {
             Number = number;
             Path = path;

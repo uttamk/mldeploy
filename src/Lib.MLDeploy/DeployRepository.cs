@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using Marklogic.Xcc;
 
@@ -10,7 +9,7 @@ namespace Lib.MLDeploy
         private readonly string _path;
         private readonly string _connectionString;
 
-        public DeployRepository(string connectionString, string path)
+        internal DeployRepository(string connectionString, string path)
         {
             _path = path;
             _connectionString = connectionString;
@@ -87,11 +86,6 @@ namespace Lib.MLDeploy
                 Request request = session.NewAdhocQuery(xqueryToExcecute);
                 session.SubmitRequest(request).AsString();
             }
-        }
-
-        public void GenerateDeployScriptFor(List<Delta> deltas)
-        {
-            throw new NotImplementedException();
         }
     }
 }

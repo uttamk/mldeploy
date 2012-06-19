@@ -7,34 +7,26 @@ namespace Lib.MLDeploy
     internal class DeltaFileName
     {
         private readonly string _fileName;
-        private readonly string _numberString;
+        private readonly long _deltaNumber;
 
         internal DeltaFileName(string fileName)
         {
             _fileName = fileName;
-            _numberString = GetNumberString();
+            _deltaNumber = ParseNumber();
         }
 
-        internal long DeltaNumber()
+        internal long Number
         {
-            var reverseNumberString = _numberString.Reverse();
-            var modulo = 1;
-            long number = 0;
-
-            foreach (var num in reverseNumberString.Select(character => Int64.Parse(new string(new[] { character }))))
-            {
-                number += num * modulo;
-                modulo *= 10;
-            }
-
-            return number;
+            get { return _deltaNumber; }
         }
+
+       
 
         internal string Description()
         {
             var extensionlessName = _fileName.Split('.')[0];
 
-            var split = extensionlessName.Split(new[] { _numberString }, StringSplitOptions.RemoveEmptyEntries);
+            var split = extensionlessName.Split(new[] { _deltaNumber.ToString() }, StringSplitOptions.RemoveEmptyEntries);
             if (split.Length == 0)
                 return string.Empty;
 
@@ -44,24 +36,20 @@ namespace Lib.MLDeploy
 
         }
 
-        private string GetNumberString()
+        private long ParseNumber()
         {
             var extensionlessName = _fileName.Split('.')[0];
             var numberString = new StringBuilder();
 
-            foreach (char character in extensionlessName)
+            foreach (var character in extensionlessName.TakeWhile(character => character.IsLong()))
             {
-                long val;
-                if (Int64.TryParse(new string(new[] { character }), out val))
-                    numberString.Append(val);
-                else
-                    break;
+                numberString.Append(character.ToLong());
             }
 
             if (numberString.Length == 0)
                 throw new ArgumentException(string.Format("Oops!! There seems to be an xquery file which doesn't start with a number called {0}.xqy", extensionlessName));
     
-            return numberString.ToString();
+            return numberString.ToString().ToLong();
         }
     }
 }

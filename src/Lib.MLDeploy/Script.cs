@@ -12,7 +12,7 @@ namespace Lib.MLDeploy
         private long _toDelta = Int64.MaxValue;
 
 
-        public Script(IScriptRepository scriptRepository, IDeltaRepository deltasRepository)
+        internal Script(IScriptRepository scriptRepository, IDeltaRepository deltasRepository)
         {
             _scriptRepository = scriptRepository;
             _deltasRepository = deltasRepository;
@@ -61,7 +61,7 @@ namespace Lib.MLDeploy
             Console.WriteLine();
         }
 
-        public void GenerateRollback()
+        internal void GenerateRollback()
         {
             var allDeltas = _deltasRepository.GetAllDeltas();
 

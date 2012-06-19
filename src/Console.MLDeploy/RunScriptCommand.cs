@@ -14,7 +14,7 @@ namespace Console.MLDeploy
         private string _connectionString;
 
 
-        public RunScriptCommand()
+        internal RunScriptCommand()
         {
             this.IsCommand("runscript", COMMAND_DESCRIPTION);
             this.HasRequiredOption("connstring|c:", CONN_STR_MESSAGE, cs => _connectionString = cs);

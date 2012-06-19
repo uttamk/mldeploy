@@ -19,7 +19,7 @@ namespace Console.MLDeploy
         private string _toDelta;
         private bool _isRollback;
 
-        public ScriptCommand()
+        internal ScriptCommand()
         {
             this.IsCommand("script", COMMAND_DESCRIPTION);
             this.HasRequiredOption("deltaspath|d:", DELTA_PATH_DESCRIPTION, d => _deltasPath = d);

@@ -8,7 +8,7 @@ namespace Lib.MLDeploy
         private readonly IDeployRepository _deployRepository;
         private readonly IDeltaRepository _deltaRepository;
 
-        public Deployer(string connectionString, string deltasDir) : this(new DeployRepository(connectionString, deltasDir), new DeltaRepository(deltasDir))
+        internal Deployer(string connectionString, string deltasDir) : this(new DeployRepository(connectionString, deltasDir), new DeltaRepository(deltasDir))
         {
         }
 
@@ -18,7 +18,7 @@ namespace Lib.MLDeploy
             _deltaRepository = deltaRepository;
         }
 
-        public void Deploy()
+        internal void Deploy()
         {
             var allDeltas = _deltaRepository.GetAllDeltas()
                                             .OrderBy(d=>d.Number);

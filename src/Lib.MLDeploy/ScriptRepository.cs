@@ -11,7 +11,7 @@ namespace Lib.MLDeploy
         private const string DEPLOY_SCRIPT_NAME = "deployscript.xqy";
         private const string ROLLBACK_SCRIPT_NAME = "rollbackscript.xqy";
 
-        public ScriptRepository(string outputPath)
+        internal ScriptRepository(string outputPath)
         {
             _outputPath = outputPath;
         }

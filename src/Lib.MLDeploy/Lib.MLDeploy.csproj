@@ -50,6 +50,7 @@
     <Compile Include="Deployer.cs" />
     <Compile Include="IDeltaRepository.cs" />
     <Compile Include="IScriptRepository.cs" />
+    <Compile Include="StringExtensions.cs" />
     <Compile Include="ScriptRunner.cs" />
     <Compile Include="Script.cs" />
     <Compile Include="IDeployRepository.cs" />

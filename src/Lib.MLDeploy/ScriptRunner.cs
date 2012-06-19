@@ -9,13 +9,13 @@ namespace Lib.MLDeploy
         private readonly string _connectionString;
         private readonly string _scriptPath;
 
-        public ScriptRunner(string connectionString, string scriptPath)
+        internal ScriptRunner(string connectionString, string scriptPath)
         {
             _connectionString = connectionString;
             _scriptPath = scriptPath;
         }
 
-        public void Run()
+        internal void Run()
         {
             Console.WriteLine("Executing xquery script at " + _scriptPath);
             var script = File.ReadAllText(_scriptPath);

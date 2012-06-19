@@ -13,7 +13,7 @@ namespace Console.MLDeploy
         private string _connectionString;
 
 
-        public DeployCommand()
+        internal DeployCommand()
         {
             this.IsCommand("deploy", COMMAND_DESCRIPTION);
             this.HasRequiredOption("connstring|c:", CONN_STR_MESSAGE, cs => _connectionString = cs);
