@@ -25,14 +25,13 @@ namespace Lib.MLDeploy
         internal string Description()
         {
             var extensionlessName = _fileName.Split('.')[0];
-
             var split = extensionlessName.Split(new[] { _deltaNumber.ToString() }, StringSplitOptions.RemoveEmptyEntries);
+
             if (split.Length == 0)
                 return string.Empty;
 
-            var descriptionString = split[0];
-
-            return descriptionString.Trim();
+            return extensionlessName.Substring(extensionlessName.IndexOf(split[0]) + split.Length - 1)
+                                    .Trim();
 
         }
 

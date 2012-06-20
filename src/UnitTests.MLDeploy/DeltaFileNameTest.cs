@@ -13,8 +13,8 @@ namespace UnitTests.MLDeploy
             Assert.Throws(typeof(ArgumentException),
                           ()=>new DeltaFileName("Test Query 123.xqy"));
         }
-
-        [Test]
+        
+       [Test]
         public void Should_Parse_the_delta_Number_from_the_intial_numbers_in_the_file_name()
         {
             var deltaNumber = new DeltaFileName("123 Test Query.xqy").Number;
@@ -26,6 +26,16 @@ namespace UnitTests.MLDeploy
         {
             var description = new DeltaFileName("123 Test Query.xqy").Description();
             Assert.AreEqual("Test Query", description);
+        }
+        
+        [Test]
+        public void Should_Parse_the_delta_description_from_the_trailing_description_even_when_it_contains_the_number()
+        {
+            var fileName = new DeltaFileName("123 Test 123 Query.xqy");
+            var description = fileName.Description();
+            var number = fileName.Number;
+            Assert.AreEqual("Test 123 Query", description);
+            Assert.AreEqual(123L, number);
         } 
         
         [Test]
