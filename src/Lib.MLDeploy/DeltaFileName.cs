@@ -9,9 +9,10 @@ namespace Lib.MLDeploy
         private readonly string _fileName;
         private readonly long _deltaNumber;
 
-        internal DeltaFileName(string fileName)
+        internal DeltaFileName(string fullFileName)
         {
-            _fileName = fileName;
+            string[] filePathSplit = fullFileName.Split('\\');
+            _fileName = filePathSplit[filePathSplit.Length - 1];
             _deltaNumber = ParseNumber();
         }
 

@@ -21,13 +21,8 @@ namespace Lib.MLDeploy
 
         private Delta CreateDeltaFromFileName(string fullFilePath)
         {
-            string[] filePathSplit = fullFilePath.Split('\\');
-            var fileName = filePathSplit[filePathSplit.Length - 1];
-            var deltaFileName = new DeltaFileName(fileName);
-            long number = deltaFileName.Number;
-            return new Delta(number, fullFilePath, deltaFileName.Description());
+            var deltaFileName = new DeltaFileName(fullFilePath);
+            return new Delta(deltaFileName.Number, fullFilePath, deltaFileName.Description());
         }
-
-       
     }
 }
