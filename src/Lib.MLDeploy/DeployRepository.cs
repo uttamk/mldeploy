@@ -64,7 +64,8 @@ namespace Lib.MLDeploy
         {
             ContentSource contentSource = ContentSourceFactory.NewContentSource(new Uri(_connectionString));
 
-            Console.WriteLine("[mldeploy] Applying delta "+ delta.Number);
+            Console.WriteLine(string.Format("[mldeploy] Applying delta {0}  ({1})", delta.Number, delta.Description));
+            
 
             using (var session = contentSource.NewSession())
             {
